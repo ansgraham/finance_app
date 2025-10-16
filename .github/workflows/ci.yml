@@ -1,0 +1,63 @@
+name: Python CI/CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  # ---------- Линтер ----------
+  lint:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.3'
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install flake8
+          flake8 app/ tests/
+
+  # ---------- Тесты ----------
+  test:
+    runs-on: self-hosted
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.3'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Run tests
+        run: pytest --maxfail=1 --disable-warnings -q
+
+  # ---------- Сборка Docker ----------
+  build-docker:
+    runs-on: self-hosted
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker image (no cache)
+        run: |
+          docker builder prune -f || true
+          docker system prune -af || true
+          docker build --no-cache -t finance_app:latest .
+
+  # ---------- Деплой ----------
+  deploy:
+    runs-on: self-hosted
+    needs: build-docker
+    steps:
+      - name: Deploy Docker container
+        run: |
+          docker stop finance_app || true
+          docker rm finance_app || true
+          docker run -d --name finance_app -p 8000:8000 finance_app:latest
