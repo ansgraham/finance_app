@@ -5,7 +5,7 @@ from app.finance_calculator import FinanceCalculator
 def test_add_income_and_expense():
     calc = FinanceCalculator()
     calc.add_income(1000)
-    calc.add_expense(900)
+    calc.add_expense(500)
     assert calc.get_balance() == 500
 
 
