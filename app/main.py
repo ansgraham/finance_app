@@ -1,5 +1,6 @@
 from finance_calculator import MortgageCalculator
 
+
 def main():
     calc = MortgageCalculator()
     calc.set_credit(1_000_000)
@@ -9,5 +10,7 @@ def main():
     print("Ежемесячный платёж:", monthly)
     print(calc.get_summary())
 
+
 if __name__ == "__main__":
     main()
+    

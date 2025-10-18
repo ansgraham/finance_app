@@ -1,4 +1,3 @@
-
 class MortgageCalculator:
     def __init__(self):
         self.credit_sum = 0
@@ -22,6 +21,7 @@ class MortgageCalculator:
         """Простая модель ежемесячного платежа (упрощённая формула)."""
         if self.credit_sum <= 0 or self.rate <= 0 or self.years <= 0:
             raise ValueError("Все значения должны быть положительными!")
+        
         self.monthly_payment = round((self.credit_sum * (1 + self.rate / 100)) / (self.years * 12), 2)
         return self.monthly_payment
 
