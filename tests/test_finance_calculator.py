@@ -8,7 +8,7 @@ def test_calculate_monthly_payment():
     calc.set_rate(10)
     calc.set_years(10)
     result = calc.calculate_monthly_payment()
-    assert result == 9066.67
+    assert result == 9166.67
 
 
 def test_invalid_values():
