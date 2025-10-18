@@ -1,17 +1,13 @@
-from app.finance_calculator import FinanceCalculator
-
+from finance_calculator import MortgageCalculator
 
 def main():
-    calc = FinanceCalculator()
-
-    calc.add_income(10000)
-    calc.add_expense(850)
-    calc.add_income(500)
-    calc.add_expense(300)
-
-    print("= Finance Calculator!!!!!! =")
-    print(f"Current balance: {calc.get_balance()}")
-
+    calc = MortgageCalculator()
+    calc.set_credit(1_000_000)
+    calc.set_rate(10)
+    calc.set_years(10)
+    monthly = calc.calculate_monthly_payment()
+    print("Ежемесячный платёж:", monthly)
+    print(calc.get_summary())
 
 if __name__ == "__main__":
     main()
