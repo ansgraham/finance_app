@@ -1,4 +1,4 @@
-from finance_calculator import MortgageCalculator
+from app.finance_calculator import MortgageCalculator
 
 
 def main():
